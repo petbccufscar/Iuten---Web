@@ -1,14 +1,15 @@
 #gameboard {
-    width: 320px;
-    height: 320px;
+    width: 40vw;
+    height: 40vw;
     background-color: black;
     display: flex;
     flex-wrap: wrap;
+    margin: auto;
 }
 
 .square {
-    height: 40px;
-    width: 40px;
+    height: 5vw;
+    width: 5vw;
     position: relative;
 }
 
@@ -30,6 +31,10 @@ path{
     z-index: 9;
 }
 
+.imagem{
+    height: 5vw;
+}
+
 .beige {
     background-color: rgb(110, 110, 98);
 }
@@ -44,4 +49,11 @@ path{
 
 .white{
     fill: rgb(255, 255, 255);
+}
+
+#texto-player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vw;
 }

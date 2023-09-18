@@ -1,19 +1,33 @@
+// const startPieces = [
+//     peao1, peao, druida, peao, king, peao, druida, peao, peao,
+//     arqueiro, king, elefante, peao, cavaleiro, peao, elefante, king, arqueiro,
+//     '', '', '', '', '', '', '', '', '',
+//     '', '', '', '', '', '', '', '', '',
+//     '', '', '', '', '', '', '', '', '',
+//     '', '', '', '', '', '', '', '', '',
+//     '', '', '', '', '', '', '', '', '',
+//     '', '', '', '', '', '', '', '', '',
+//     '', '', '', '', '', '', '', '', '',
+//     arqueiro, king, elefante, peao, cavaleiro, peao, elefante, king, arqueiro,
+//     peao, peao, druida, peao, king, peao, druida, peao, peao,
+// ]
+
 const gameBoard = document.querySelector("#gameboard")
 const playerDisplay = document.querySelector("#player")
 const infoDisplay = document.querySelector("#info-display")
 const width = 8
-let playerGo = 'black'
-playerDisplay.textContent = 'black'
+let playerGo = 'vermelho'
+playerDisplay.textContent = 'vermelho'
 
 const startPieces = [
-    rook, knight, bishop, queen, king, bishop, knight, rook,
-    pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn,
+    elefante, cavaleiro, arqueiro, druida, king, arqueiro, cavaleiro, elefante,
+    peao, peao, peao, peao, peao, peao, peao, peao,
     '', '', '', '', '', '', '', '',
     '', '', '', '', '', '', '', '',
     '', '', '', '', '', '', '', '',
     '', '', '', '', '', '', '', '',
-    pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn,
-    rook, knight, bishop, queen, king, bishop, knight, rook
+    peao1, peao1, peao1, peao1, peao1, peao1, peao1, peao1,
+    elefante1, cavaleiro1, arqueiro1, druida1, king, arqueiro1, cavaleiro1, elefante1
 ]
 
 function createBoard() {
@@ -31,15 +45,14 @@ function createBoard() {
         }
 
         if (i <= 15) {
-            square.firstChild.firstChild.classList.add('black')
+            square.firstChild.firstChild.classList.add('vermelho')
         }
 
         if (i >= 48) {
-            square.firstChild.firstChild.classList.add("white")
+            square.firstChild.firstChild.classList.add("verde")
         }
         gameBoard.append(square)
     })
-
 }
 
 createBoard();
@@ -69,7 +82,7 @@ function dragDrop(e) {
     const correctGo = draggedElement.firstChild.classList.contains(playerGo)
     const taken = e.target.classList.contains('piece')
     const valid = checkIfValid(e.target)
-    const opponentGo = playerGo == 'white' ? 'black' : 'white'
+    const opponentGo = playerGo == 'verde' ? 'vermelho' : 'verde'
     const takenByOpponent = e.target.firstChild?.classList.contains(opponentGo)
 
     if (correctGo) {
@@ -104,7 +117,7 @@ function checkIfValid(target){
     console.log('piece',piece)
 
     switch(piece){
-        case 'pawn':
+        case 'peao' || 'peao1':
             const starterRow = [8, 9 ,10 ,11 ,12 ,13 ,14 ,15]
             if(starterRow.includes(startId) && startId + width * 2 === targetId ||
                 startId + width === targetId ||
@@ -114,7 +127,7 @@ function checkIfValid(target){
                 return true
                 }
             break;
-        case 'knight':
+        case 'cavaleiro' || 'cavaleiro1':
             if(
                 startId + width * 2 + 1 === targetId ||
                 startId + width * 2 - 1 === targetId ||
@@ -129,7 +142,7 @@ function checkIfValid(target){
                 }
             break;
         /*
-        case 'bishop':
+        case 'arqueiro':
         const fileDifference = Math.abs(targetId % width - startId % width);
         const rankDifference = Math.abs(Math.floor(targetId / width) - Math.floor(startId / width));
 
@@ -148,7 +161,7 @@ function checkIfValid(target){
     break;
 
         */ 
-        case 'bishop':
+        case 'arqueiro' || 'arqueiro1':
             if(
                 startId + width + 1 === targetId ||
                 startId + width * 2 + 2 === targetId && !document.querySelector(`[square-id="${targetId + width + 1}"]`).firstChild ||
@@ -222,7 +235,7 @@ function checkIfValid(target){
                 return true
                 }
             break;
-        case 'queen':
+        case 'druida':
             if(
                 startId + width + 1 === targetId ||
                 startId + width * 2 + 2 === targetId && !document.querySelector(`[square-id="${targetId + width + 1}"]`).firstChild ||
@@ -309,14 +322,14 @@ function checkIfValid(target){
 }
 
 function changePlayer() {
-    if (playerGo === 'black') {
+    if (playerGo === ' vermelho') {
         reverseIds()
-        playerGo = 'white'
-        playerDisplay.textContent = 'white'
+        playerGo = 'verde'
+        playerDisplay.textContent = 'verde'
     } else {
         revertIds()
-        playerGo = 'black'
-        playerDisplay.textContent = 'black'
+        playerGo = 'vermelho'
+        playerDisplay.textContent = 'vermelho'
     }
 }
 
@@ -334,13 +347,13 @@ function revertIds() {
 function checkForWin() {
     const kings = Array.from(document.querySelectorAll('#king'))
     console.log(kings)
-    if (!kings.some(king => king.firstChild.classList.contains('white'))) {
-        infoDisplay.innerHTML = 'Black wins'
+    if (!kings.some(king => king.firstChild.classList.contains('verde'))) {
+        infoDisplay.innerHTML = 'Vermelho wins'
         const allSquares = document.querySelectorAll('.square')
         allSquares.forEach(square.firstChild?.setAttribute('draggable', false))
     }
-    else if (!kings.some(king => king.firstChild.classList.contains('black'))) {
-        infoDisplay.innerHTML = 'White wins'
+    else if (!kings.some(king => king.firstChild.classList.contains('vermelho'))) {
+        infoDisplay.innerHTML = 'Verde wins'
         const allSquares = document.querySelectorAll('.square')
         allSquares.forEach(square.firstChild?.setAttribute('draggable', false))
     }
